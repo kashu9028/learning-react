@@ -17,22 +17,41 @@ function App() {
   }, []);
   //setting variables and their function to set value using useState
   //OnChange or default Value is required to use value of any input
-  const [input1, setInput1] = useState('');
-  const [input2, setInput2] = useState('');
-  const [operator, setOperator] = useState('');
-  const [result, setResult] = useState('null');
+  // const [input1, setInput1] = useState('');
+  // const [input2, setInput2] = useState('');
+  // const [operator, setOperator] = useState('');
+  // const [result, setResult] = useState('null');
+
+  //combined states
+  const [calculatorState, setCalculatorState] = useState({
+    input1: '',
+    input2: '',
+    operator: '',
+    result: 'null',
+  });
 
   //function to set operator
   const handleOperatorClick = (chosenOperator) => {
-    setOperator(chosenOperator);
+    //setOperator(chosenOperator);
+    setCalculatorState(prevState => ({
+      ...prevState,
+      operator: chosenOperator,
+    }));
   };
 
   //function to clear everything using their functions
   const handleClearClick = () => {
-    setInput1('');
-    setInput2('');
-    setOperator('');
-    setResult('null');
+    setCalculatorState(prevState => ({
+      ...prevState,
+      input1: '',
+      input2: '',
+      operator: '',
+      result: 'null'
+    }));
+    // setInput1('');
+    // setInput2('');
+    // setOperator('');
+    // setResult('null');
   };
 
   //to change value of input, this on change function is must. And using this function, we change value of the input on change
@@ -42,9 +61,17 @@ function App() {
     //const value = event.target.value;
     const value = Math.max(min, Math.min(max, Number(event.target.value)));
     if (inputNumber === 1) {
-      setInput1(value);
+      //setInput1(value);
+      setCalculatorState(prevState => ({
+        ...prevState,
+        input1: value,
+      }));
     } else if (inputNumber === 2) {
-      setInput2(value);
+      //setInput2(value);
+      setCalculatorState(prevState => ({
+        ...prevState,
+        input2: value,
+      }));
     }
   };
 
@@ -74,14 +101,20 @@ function App() {
           calculatedResult = '';
       }
     }
-    setResult(calculatedResult);
+
+    //setResult(calculatedResult);
+    setCalculatorState(prevState => ({
+      ...prevState,
+      result: calculatedResult,
+    }));
   };
 
   // Validation function to check if input is non-negative
   const isNonNegative = (value) => {
     return parseFloat(value) >= 0 || value === '';
   };
-
+  //get state and use as normal variables
+  const { input1, input2, operator, result } = calculatorState;
   return (
     <div className="calculator">
       <input
